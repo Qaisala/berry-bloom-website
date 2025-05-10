@@ -1,0 +1,987 @@
+* {
+  box-sizing: border-box;
+
+  /* Spacing  */
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Gotham", serif;
+  color: #2c3e50;
+  overflow-x: hidden;
+}
+
+header {
+  width: 100%;
+  background-color: #f1f1f1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Header */
+.logo img {
+  width: 190px;
+  height: auto;
+}
+.nav-right ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+
+  /* Spacing  */
+  gap: 40px;
+}
+.nav-right ul li a {
+  color: #34495e;
+  font-size: 18px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  cursor: pointer;
+
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  display: inline-block;
+
+  /* Spacing  */
+  padding: 8px 15px;
+}
+.nav-right ul li a:hover {
+  color: #ddb690;
+}
+#button-track {
+  text-decoration: none;
+  background-color: #ffce12;
+  color: #2c3e50;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  /* Spacing  */
+  padding: 10px 20px;
+}
+#button-track:hover {
+  background-color: #e2b913;
+}
+.cart-img {
+  height: 25px;
+  width: auto;
+}
+#cart-count {
+  font-size: 13px;
+  position: absolute;
+  top: 23px;
+  right: 6px;
+  border-radius: 30px;
+  background-color: #fce6d0;
+  color: #cf7e03;
+
+  /* Spacing  */
+  padding: 3px 6px;
+}
+/* Style for "Products" the dropdown container */
+.nav-right ul li.dropdown .dropdown-menu {
+  display: none !important;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #f1f1f1 !important;
+  border: 1px solid #ccc;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  list-style: none;
+}
+.nav-right ul li.dropdown:hover .dropdown-menu {
+  display: block !important;
+}
+.dropdown {
+  position: relative;
+}
+.dropdown-toggle {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.dropdown-menu {
+  display: none; /* This line is crucial - ensures it's hidden by default */
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  border: 1px solid #ccc;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  list-style: none;
+}
+.dropdown:hover .dropdown-menu {
+  display: block; /* This shows the dropdown on hover */
+}
+.dropdown-menu li a {
+  display: block;
+  text-decoration: none;
+  color: #333;
+  font-family: "Gotham", sans-serif;
+  font-size: 15px !important;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f1f1f1;
+
+  /* Spacing  */
+  padding: 20px 20px;
+}
+
+#banner {
+  background-size: cover;
+  background-position: center;
+  height: auto;
+  text-align: center;
+  color: white;
+  width: 70%;
+
+  /* Spacing  */
+  /* margin-top: 20px; */
+  margin-bottom: 70px;
+}
+
+#banner .banner-content {
+  background-color: #2c3e50;
+  border-radius: 10px;
+  width: 100%;
+
+  /* Spacing  */
+  padding: 20px;
+}
+
+#banner h2 {
+  font-size: 3em;
+
+  /* Spacing  */
+  margin-bottom: 20px;
+}
+
+#banner p {
+  font-size: 1.2em;
+
+  /* Spacing  */
+  margin-bottom: 20px;
+}
+
+.women-men-btn {
+  background-color: #fce6d0;
+  color: white;
+  color: #2c3e50;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.3em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  /* Spacing  */
+  padding: 15px 30px;
+}
+
+.women-men-btn:hover {
+  background-color: #ddb690;
+}
+
+/* ........Carsoul Section ........ */
+
+.parent-carsoul {
+  display: flex;
+  justify-content: space-around;
+  width: 95%;
+  position: relative;
+
+  /* Spacing  */
+  margin-bottom: 70px;
+}
+
+.icon-female,
+.icon-male {
+  max-height: 30px;
+  max-width: 30px;
+}
+
+.carousel-item {
+  width: 40%;
+  text-align: center;
+  position: relative;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+}
+
+.carousel-wrapper {
+  display: flex;
+  transition: transform 0.3s ease;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.carousel-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-slide {
+  flex: 0 0 auto;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.carousel-slide:hover {
+  transform: translateY(-10px);
+}
+
+.carousel-slide img {
+  display: block;
+
+  /* Spacing  */
+  max-height: 200px;
+}
+
+.carousel-caption {
+  font-family: "Your Preferred Font", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+  text-transform: capitalize;
+
+  /* Spacing  */
+  padding: 5px 0;
+  letter-spacing: 0.5px;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  /* Spacing  */
+  padding: 10px;
+}
+
+.carousel-button.prev {
+  left: -15px;
+}
+
+.carousel-button.next {
+  right: -15px;
+}
+
+.carousel-item h3 {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  text-align: center;
+
+  /* Spacing  */
+  margin-bottom: 5px;
+}
+
+/* productswomen & productsmen Sections  */
+#productswomen,
+#productsmen {
+  text-align: center;
+  border-radius: 20px;
+  background-color: #f1f1f1;
+  width: 100%;
+
+  /* Spacing  */
+  margin-bottom: 70px;
+}
+
+#productswomen h2,
+#productsmen h2 {
+  font-size: 2.4em;
+  color: #2c3e50;
+
+  /* Spacing  */
+  margin-bottom: 25px;
+}
+
+.product-women-list,
+.product-men-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  justify-content: center;
+
+  /* Spacing  */
+  gap: 20px;
+}
+
+.product-men-list {
+  /* Spacing  */
+  margin-bottom: 60px;
+}
+
+/* Classes that are not in the html */
+.product-item {
+  display: flex; /* Enable flexbox for centering the button */
+  flex-direction: column; /* Stack the elements vertically */
+  align-items: center; /* Center items horizontally along the cross-axis */
+  text-align: center; /* Center the text content within other elements */
+
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+
+  /* Spacing  */
+  padding: 15px 10px;
+}
+
+.product-item:hover {
+  transform: translateY(-10px);
+}
+
+.product-item img {
+  object-fit: fill;
+  border-radius: 5px;
+
+  /* Spacing  */
+  max-height: 150px;
+  margin-bottom: 15px;
+}
+
+.product-item h3 {
+  font-size: 1.3em;
+  color: #2c3e50;
+
+  /* Spacing  */
+  margin-bottom: 10px;
+}
+
+.product-item .price {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #f8aa35;
+
+  /* Spacing  */
+  margin-bottom: 15px;
+}
+
+.product-item .description {
+  font-size: 1em;
+  color: #7f8c8d;
+
+  /* Spacing  */
+  margin-bottom: 10px;
+}
+
+/* Add to cart  */
+.add-to-cart {
+  position: relative; /* For positioning the icon */
+  overflow: hidden; /* To potentially hide the icon initially */
+  padding: 8px 15px; /* Adjust padding as needed */
+  background-color: #2c3e50; /* Initial background color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  display: flex; /* To align text and icon */
+  align-items: center; /* Vertically align text and icon */
+  justify-content: center; /* Initially center the text */
+  width: fit-content; /* Make the button only as wide as its content */
+}
+
+.add-to-cart:hover {
+  background-color: #e4d5b7;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.add-to-cart span {
+  display: inline-block;
+  opacity: 1; /* Initially show the text */
+  transition: opacity 0.2s ease;
+}
+
+.add-to-cart .cart-icon-svg {
+  width: 1em; /* Adjust icon size */
+  height: 1em; /* Adjust icon size */
+  fill: #2c3e50;
+  opacity: 0; /* Initially hide the icon */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the icon */
+  transition: opacity 0.2s ease; /* Smooth opacity transition */
+}
+
+.add-to-cart.clicked {
+  background-color: #e4d5b7;
+}
+
+.add-to-cart.clicked span {
+  opacity: 0; /* Hide text when clicked */
+}
+
+.add-to-cart.clicked .cart-icon-svg {
+  opacity: 1; /* Show icon when clicked */
+}
+
+.product-rating img {
+  height: 18px;
+  width: 100px;
+  /* cursor: pointer; */
+}
+
+/* "About Us" and "Contact Us" sections */
+#about,
+#contact {
+  text-align: center;
+  color: #7f8c8d;
+  line-height: 1.7;
+  max-width: 800px;
+
+  /* Spacing  */
+  margin-bottom: 80px;
+}
+
+#about h2,
+#contact h2 {
+  font-size: 2.5em;
+  color: #2c3e50;
+}
+
+#about p,
+#contact p {
+  font-size: 1.3em;
+}
+
+footer {
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+
+  /* Spacing  */
+  padding: 20px;
+  /* margin-top: 50px; */
+}
+
+.cart-notification {
+  position: fixed;
+  top: 120px;
+  right: 20px;
+  background-color: #2c3e50;
+  color: #fce6d0;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: translateY(-20px);
+  z-index: 1000;
+
+  /* Spacing  */
+  padding: 15px 20px;
+}
+
+.cart-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cart-notification a {
+  color: #ddb690;
+  text-decoration: underline;
+}
+
+#cart-notification img#notification-image {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  border-radius: 5px;
+
+  /* Spacing  */
+  margin-right: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+/* @media  1200px for Larger laptops and smaller desktop monitors.     */
+/* @media 992px for Tablets in landscape orientation and smaller laptops or notebooks */
+/* @media 768px for Larger smartphones in landscape orientation and smaller tablets */
+/* @media 520px mobile devices (smartphones) in portrait orientation */
+
+@media (max-width: 1400px) {
+  .product-women-list,
+  .product-men-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .product-women-list,
+  .product-men-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 895px) {
+  /* Header */
+  .logo img {
+    width: 160px;
+  }
+  .nav-right ul li a {
+    font-size: 16px;
+  }
+  #button-track {
+    padding: 9px 18px;
+  }
+  .cart-img {
+    height: 20px;
+  }
+  #cart-count {
+    font-size: 11px;
+    top: 18px;
+    right: 8px;
+    padding: 2px 4px;
+  }
+  .dropdown-menu li a {
+    font-size: 13px !important;
+  }
+
+  #banner h2 {
+    font-size: 2.6em;
+
+    /* Spacing  */
+    margin-bottom: 18px;
+  }
+
+  #banner p {
+    font-size: 1.1em;
+
+    /* Spacing  */
+    margin-bottom: 18px;
+  }
+
+  .women-men-btn {
+    font-size: 1.1em;
+    padding: 12px 25px;
+  }
+
+  /* ........Carsoul Section ........ */
+  .parent-carsoul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    /* Spacing  */
+    margin-bottom: 0px;
+  }
+
+  .carousel-item {
+    width: 80%;
+  }
+
+  .carousel-container {
+    margin-bottom: 50px;
+  }
+
+  .carousel-slide img {
+    max-height: 180px;
+  }
+
+  .carousel-caption {
+    font-size: 0.8rem;
+  }
+
+  .carousel-button {
+    /* Spacing  */
+    padding: 8px;
+  }
+
+  .carousel-item h3 {
+    font-size: 1.3rem;
+  }
+
+  /* Women's Perfume & Men's Perfume Section  */
+  #productswomen {
+    /* Spacing  */
+    margin-bottom: 70px;
+  }
+
+  #productswomen h2,
+  #productsmen h2 {
+    font-size: 2em;
+
+    /* Spacing  */
+    margin-bottom: 20px;
+  }
+
+  .product-women-list,
+  .product-men-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .product-men-list {
+    /* Spacing  */
+    margin-bottom: 40px;
+  }
+
+  /* Classes that are not in the html */
+  .product-item img {
+    /* Spacing  */
+    max-height: 160px;
+    margin-bottom: 15px;
+  }
+
+  .product-item h3 {
+    font-size: 1.3em;
+
+    /* Spacing  */
+    margin-bottom: 10px;
+  }
+
+  .product-item .price {
+    font-size: 1.1em;
+
+    /* Spacing  */
+    margin-bottom: 15px;
+  }
+
+  .product-item .description {
+    font-size: 1em;
+
+    /* Spacing  */
+    margin-bottom: 15px;
+  }
+
+  .add-to-cart {
+    padding: 7px 14px; /* Adjust padding as needed */
+  }
+
+  /* .add-to-cart {
+    border-radius: 20px;
+    font-size: 0.8em;
+    padding: 8px 16px;
+  } */
+
+  /* "About Us" and "Contact Us" sections */
+  #about,
+  #contact {
+    /* Spacing  */
+    margin-bottom: 40px;
+  }
+
+  #about h2,
+  #contact h2 {
+    font-size: 2.3em;
+  }
+
+  #about p,
+  #contact p {
+    font-size: 1.2em;
+  }
+
+  /* Add to cart notification  */
+  .cart-notification {
+    top: 110px;
+    right: 20px;
+
+    /* Spacing  */
+    padding: 13px 17px;
+  }
+
+  #cart-notification img#notification-image {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* @media (max-width: 645px) {} */
+
+/* @media 790px  */
+@media (max-width: 790px) {
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo img {
+    width: 130px;
+  }
+
+  .nav-right ul {
+    gap: 30px;
+  }
+
+  .nav-right ul li a {
+    font-size: 16px;
+
+    /* Spacing  */
+    padding: 8px 15px;
+  }
+
+  #button-track {
+    padding: 8px 16px;
+  }
+
+  .cart-img {
+    height: 20px;
+  }
+
+  #cart-count {
+    font-size: 11px;
+    top: 18px;
+    right: 8px;
+
+    /* Spacing  */
+    padding: 1px 4px;
+  }
+
+  #banner h2 {
+    font-size: 2.3em;
+  }
+
+  #banner p {
+    font-size: 1.1em;
+  }
+
+  #banner button {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  #productswomen h2,
+  #productsmen h2 {
+    font-size: 1.8em;
+  }
+
+  .product-women-list,
+  .product-men-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  /* Classes that are not in the html */
+  .product-item img {
+    /* Spacing  */
+    margin-bottom: 10px;
+  }
+
+  .product-item h3 {
+    font-size: 1.2em;
+
+    /* Spacing  */
+    margin-bottom: 10px;
+  }
+
+  .product-item .price {
+    font-size: 1em;
+
+    /* Spacing  */
+    margin-bottom: 15px;
+  }
+
+  .product-item .description {
+    font-size: 0.9em;
+
+    /* Spacing  */
+    margin-bottom: 5px;
+  }
+
+  .add-to-cart {
+    font-size: 0.7em;
+  }
+
+  /* "About Us" and "Contact Us" sections */
+  #about,
+  #contact {
+    /* Spacing  */
+    margin-bottom: 40px;
+  }
+
+  #about h2,
+  #contact h2 {
+    font-size: 2em;
+  }
+
+  #about p,
+  #contact p {
+    font-size: 1.1em;
+  }
+
+  /* Add to cart notification  */
+  .cart-notification {
+    top: 140px;
+    right: 20px;
+    padding: 13px 17px;
+  }
+
+  #cart-notification img#notification-image {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 610px) {
+  .nav-right ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Spacing  */
+    gap: 5px;
+  }
+
+  .nav-right ul li a {
+    font-size: 14px;
+
+    /* Spacing  */
+    padding: 8px 15px;
+  }
+
+  /* ..........  */
+  #button-track {
+    padding: 5px 10px;
+  }
+
+  #banner {
+    margin-bottom: 50px;
+  }
+
+  #banner h2 {
+    font-size: 2.1em;
+  }
+
+  #banner p {
+    font-size: 1em;
+  }
+
+  #banner button {
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+
+  #productswomen h2,
+  #productsmen h2 {
+    font-size: 1.7em;
+  }
+
+  .product-item h3 {
+    font-size: 1.1em;
+  }
+
+  .product-item .description {
+    font-size: 0.8em;
+
+    /* Spacing  */
+    margin-bottom: 5px;
+  }
+
+  /* "About Us" and "Contact Us" sections */
+  #about,
+  #contact {
+    /* Spacing  */
+    margin-bottom: 30px;
+  }
+
+  #about h2,
+  #contact h2 {
+    font-size: 1.9em;
+  }
+
+  #about p,
+  #contact p {
+    font-size: 1em;
+  }
+
+  /* Add to cart notification  */
+  .cart-notification {
+    top: 280px;
+    padding: 12px 15px;
+  }
+
+  #cart-notification img#notification-image {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media (max-width: 457px) {
+  .women-men {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .women-men-btn {
+    padding: 10px 20px;
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 420px) {
+  #banner h2 {
+    font-size: 1.9em;
+  }
+
+  #banner p {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 387px) {
+  #banner h2 {
+    font-size: 1.6em;
+  }
+
+  #banner p {
+    font-size: 0.8em;
+  }
+
+  .icon-female,
+  .icon-male {
+    max-height: 25px;
+    max-width: 25px;
+  }
+
+  .carousel-item h3 {
+    font-size: 1em;
+  }
+}

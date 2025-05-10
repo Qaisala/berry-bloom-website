@@ -1,0 +1,666 @@
+<!-- track.html  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Tracking</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Gotham", serif;
+        font-size: 1.3em;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #2c3e50;
+        overflow-x: hidden;
+      }
+
+      header {
+        width: 100%;
+        background-color: #f1f1f1;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .logo img {
+        width: 190px;
+        height: auto;
+      }
+
+      .nav-right ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+
+        /* Spacing  */
+        gap: 40px;
+      }
+
+      .nav-right ul li a {
+        color: #34495e;
+        font-size: 18px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+        cursor: pointer;
+
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        display: inline-block;
+
+        /* Spacing  */
+        padding: 8px 15px;
+      }
+
+      .nav-right ul li a:hover {
+        color: #ddb690;
+      }
+
+      #button-track {
+        text-decoration: none;
+        background-color: #ffce12;
+        color: #2c3e50;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+
+        /* Spacing  */
+        padding: 10px 20px;
+      }
+      #button-track:hover {
+        background-color: #e2b913;
+      }
+
+      .cart-img {
+        height: 25px;
+        width: auto;
+      }
+
+      #cart-count {
+        font-size: 13px;
+        position: absolute;
+        top: 23px;
+        right: 6px;
+        border-radius: 30px;
+        background-color: #fce6d0;
+        color: #cf7e03;
+
+        /* Spacing  */
+        padding: 3px 6px;
+      }
+
+      /* Style for "Products" the dropdown container */
+      /* Style for "Products" the dropdown container */
+      .nav-right ul li.dropdown .dropdown-menu {
+        display: none !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #f1f1f1 !important;
+        border: 1px solid #ccc;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        list-style: none;
+      }
+      .nav-right ul li.dropdown:hover .dropdown-menu {
+        display: block !important;
+      }
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-toggle {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+      }
+      .dropdown-menu {
+        display: none; /* This line is crucial - ensures it's hidden by default */
+        position: absolute;
+        top: 100%;
+        left: 0;
+
+        border: 1px solid #ccc;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        list-style: none;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block; /* This shows the dropdown on hover */
+      }
+      .dropdown-menu li a {
+        display: block;
+        text-decoration: none;
+        color: #333;
+        font-family: "Gotham", sans-serif;
+        font-size: 15px !important;
+      }
+
+      h1 {
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        /* max-width: 800px; */
+        max-width: auto;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .track-order-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .container h1 {
+        font-size: 2em;
+      }
+
+      #trackingNumber {
+        padding: 10px 25px;
+        width: auto;
+        font-size: 15px;
+        margin-bottom: 3px;
+      }
+
+      .track-order-input input[type="text"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 300px;
+      }
+
+      .button-track {
+        width: 50%;
+        align-self: center;
+        padding: 10px 20px;
+
+        background-color: #ffce12;
+        color: #2c3e50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .button-track:hover {
+        background-color: #e2b913;
+        color: #2c3e50;
+      }
+
+      .progress-track {
+        position: relative;
+        width: 100%;
+        margin: 30px auto;
+      }
+
+      #progressbar {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style-type: none;
+        position: relative;
+        z-index: 1;
+      }
+
+      #progressbar li {
+        text-align: center;
+        flex-basis: calc(100% / 3);
+        position: relative;
+      }
+
+      #progressbar li::before {
+        content: "\2022";
+        font-size: 2em;
+        color: #ccc;
+        display: block;
+        margin: 0 auto 10px;
+      }
+
+      #progressbar li.active::before {
+        color: #28a745;
+      }
+
+      #progressbar li::after {
+        content: attr(data-label);
+        font-size: 0.8em;
+        color: #555;
+
+        position: absolute;
+        left: 50%;
+        bottom: -25px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      #progressbar li.active::after {
+        /* color: #333; */
+        color: #28a745;
+      }
+
+      .progress {
+        height: 5px;
+        background-color: #ccc;
+        position: absolute;
+        top: 1em;
+        left: 0;
+        width: 100%;
+        z-index: 0;
+        clip-path: inset(0 calc(0.5 * (100% / 3)) 0 calc(0.5 * (100% / 3)));
+      }
+
+      .progress-line {
+        background-color: #28a745;
+        height: 100%;
+        width: 0%;
+        position: absolute;
+        left: 0;
+      }
+
+      .error-message {
+        margin-top: 10px;
+      }
+
+      #tracking-error {
+        color: red;
+      }
+
+      .error-visible {
+        display: block !important;
+      }
+
+      .cancelled-status {
+        color: red;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      /* Hide the original text in the progress-step divs */
+      .progress-track > div > p {
+        display: none;
+      }
+      #progressbar li.first-active::before {
+        color: #28a745 !important; /* Use !important to ensure it overrides */
+      }
+      /* ...................... */
+      @media (max-width: 895px) {
+        /* Header */
+        .logo img {
+          width: 160px;
+        }
+        .nav-right ul li a {
+          font-size: 16px;
+        }
+        #button-track {
+          padding: 9px 18px;
+        }
+        .cart-img {
+          height: 20px;
+        }
+        #cart-count {
+          font-size: 11px;
+          top: 18px;
+          right: 8px;
+          padding: 2px 4px;
+        }
+        .dropdown-menu li a {
+          font-size: 13px !important;
+        }
+
+        .dropdown-toggle {
+          padding: 8px 15px;
+        }
+
+        .dropdown-menu {
+          top: 100%;
+          left: 0;
+          z-index: 1;
+          min-width: 150px;
+        }
+
+        .dropdown-menu li a {
+          padding: 12px 15px;
+          font-size: 12px;
+        }
+
+        .container h1 {
+          font-size: 1.6em;
+        }
+
+        #progressbar li::after {
+          font-size: 0.7em;
+          bottom: -15px;
+        }
+      }
+
+      /* @media 790px  */
+      @media (max-width: 790px) {
+        header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .logo img {
+          width: 130px;
+        }
+
+        .nav-right ul {
+          gap: 30px;
+        }
+
+        .nav-right ul li a {
+          font-size: 16px;
+
+          /* Spacing  */
+          padding: 8px 15px;
+        }
+
+        #button-track {
+          padding: 8px 16px;
+        }
+
+        .cart-img {
+          height: 20px;
+        }
+
+        #cart-count {
+          font-size: 11px;
+          top: 18px;
+          right: 8px;
+
+          /* Spacing  */
+          padding: 1px 4px;
+        }
+      }
+
+      /* @media 645px  */
+      @media (max-width: 610px) {
+        .nav-right ul {
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          /* Spacing  */
+          gap: 5px;
+        }
+
+        .nav-right ul li a {
+          font-size: 14px;
+
+          /* Spacing  */
+          padding: 8px 15px;
+        }
+
+        #button-track {
+          padding: 5px 10px;
+        }
+
+        .container h1 {
+          font-size: 1.4em;
+        }
+
+        #progressbar li::after {
+          font-size: 0.6em;
+          bottom: -10px;
+        }
+      }
+
+      @media (max-width: 572px) {
+        .container h1 {
+          font-size: 1.2em;
+        }
+
+        #progressbar li::after {
+          font-size: 0.5em;
+          bottom: -10px;
+        }
+      }
+
+      @media (max-width: 365px) {
+        .container h1 {
+          font-size: 0.8em !important;
+        }
+        #progressbar li::after {
+          font-size: 0.5em;
+          bottom: -6px;
+        }
+      }
+    </style>
+  </head>
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/Berry & Bloom-1.png" alt="Perfume Store Logo" />
+      </a>
+    </div>
+    <nav class="nav-right">
+      <ul>
+        <li>
+          <a href="track.html" class="button-like" id="button-track">
+            Track your order</a
+          >
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Products</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="index.html#productswomen">Women's Perfume</a>
+            </li>
+            <li>
+              <a href="index.html#productsmen">Men's Perfume</a>
+            </li>
+          </ul>
+        </li>
+
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li>
+          <a href="checkout.html"
+            ><img src="./img/shopping-cart.png" class="cart-img" />
+            <span id="cart-count">0</span></a
+          >
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <body>
+    <div class="container">
+      <h1>Track Your Order</h1>
+
+      <div class="track-order-container">
+        <input
+          type="text"
+          id="trackingNumber"
+          placeholder="Enter your tracking number"
+        />
+        <button class="button-track" onclick="trackOrder()">Track Now</button>
+      </div>
+
+      <p
+        id="tracking-error"
+        class="error-message"
+        style="color: red; display: none"
+      >
+        Tracking number not found.
+      </p>
+
+      <div class="progress-track">
+        <ul id="progressbar">
+          <li class="step" data-label="Order received"></li>
+          <li class="step" data-label="Out for delivery"></li>
+          <li class="step" data-label="Delivered"></li>
+        </ul>
+        <div class="progress">
+          <div class="progress-line"></div>
+        </div>
+        <div class="progress-step">
+          <p class="progress-info">Order Placed</p>
+        </div>
+        <div class="progress-step">
+          <p class="progress-info">Out for Delivery</p>
+        </div>
+        <div class="progress-step">
+          <p class="progress-info">Delivered</p>
+        </div>
+      </div>
+
+      <p id="cancelled-message" class="cancelled-status" style="display: none">
+        This order has been cancelled.
+      </p>
+    </div>
+
+    <script>
+      const progressSteps = document.querySelectorAll("#progressbar li");
+      const progressLine = document.querySelector(".progress-line");
+      const trackingError = document.getElementById("tracking-error");
+      const cancelledMessage = document.getElementById("cancelled-message");
+
+      console.log("progressSteps:", progressSteps);
+
+      function updateProgressBar(status) {
+        const statusOrder = ["Order received", "Out for delivery", "Delivered"];
+        const statusIndex = statusOrder.indexOf(status);
+
+        console.log("Current status:", status);
+        console.log("Status index:", statusIndex);
+
+        // Reset progress bar
+        progressSteps.forEach((step) => step.classList.remove("active"));
+        progressLine.style.width = "0%";
+        progressLine.style.left = "0%";
+        cancelledMessage.style.display = "none";
+        trackingError.style.display = "none";
+
+        if (status === "Cancelled") {
+          cancelledMessage.style.display = "block";
+        } else if (statusIndex === 0) {
+          // Specifically target "Order received"
+          progressSteps[0].classList.add("active");
+          progressLine.style.width = "0%";
+        } else if (statusIndex === 1) {
+          progressSteps[0].classList.add("active");
+          progressSteps[1].classList.add("active");
+          progressLine.style.width = "50%";
+        } else if (statusIndex === 2) {
+          progressSteps.forEach((step) => step.classList.add("active"));
+          progressLine.style.width = "100%";
+        }
+      }
+
+      function trackOrder() {
+        const trackingNumberInput = document.getElementById("trackingNumber");
+        const trackingNumber = trackingNumberInput.value.trim();
+
+        console.log("Entered tracking number:", trackingNumber);
+
+        if (trackingNumber) {
+          const orders = localStorage.getItem("orders");
+          console.log("Orders from localStorage:", orders);
+
+          if (orders) {
+            const ordersArray = JSON.parse(orders);
+            console.log("Parsed ordersArray:", ordersArray);
+
+            const foundOrder = ordersArray.find(
+              (order) => order.trackingNumber === trackingNumber
+            );
+
+            console.log("Found order:", foundOrder);
+
+            if (foundOrder) {
+              updateProgressBar(foundOrder.status);
+              trackingError.classList.remove("error-visible"); // Ensure error class is removed
+              trackingError.style.display = "none"; // Also ensure inline style is hidden
+            } else {
+              console.log("Tracking number NOT found in ordersArray");
+              trackingError.classList.add("error-visible"); // Add a class to make it visible
+              resetProgressBar();
+              cancelledMessage.style.display = "none";
+            }
+          } else {
+            console.log("No order data found in localStorage");
+            alert("No order data found.");
+            resetProgressBar();
+            cancelledMessage.style.display = "none";
+            trackingError.classList.remove("error-visible"); // Ensure error class is removed
+            trackingError.style.display = "none"; // Also ensure inline style is hidden
+          }
+        } else {
+          console.log("Tracking number input is empty");
+          alert("Please enter your tracking number.");
+          resetProgressBar();
+          cancelledMessage.style.display = "none";
+          trackingError.classList.remove("error-visible"); // Ensure error class is removed
+          trackingError.style.display = "none"; // Also ensure inline style is hidden
+        }
+      }
+
+      function resetProgressBar() {
+        progressSteps.forEach((step) => step.classList.remove("active"));
+        progressLine.style.width = "0%";
+        progressLine.style.left = "0%";
+        trackingError.style.display = "none"; // Ensure error is hidden on reset
+      }
+
+      // Check for orderId in the URL on page load (for direct tracking from dashboard)
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get("orderId");
+
+        if (orderId) {
+          const orders = localStorage.getItem("orders");
+          if (orders) {
+            const ordersArray = JSON.parse(orders);
+            const currentOrder = ordersArray.find(
+              (order) => order.orderId === orderId
+            );
+            if (currentOrder) {
+              updateProgressBar(currentOrder.status);
+            } else {
+              alert(`Order with ID ${orderId} not found.`);
+              resetProgressBar();
+              cancelledMessage.style.display = "none";
+              trackingError.style.display = "none"; // Hide error if orderId not found
+            }
+          } else {
+            alert("No orders found in local storage.");
+            resetProgressBar();
+            cancelledMessage.style.display = "none";
+            trackingError.style.display = "none"; // Hide error if no orders
+          }
+        } else {
+          resetProgressBar();
+          cancelledMessage.style.display = "none";
+          trackingError.style.display = "none"; // Hide error on initial load
+        }
+      });
+    </script>
+  </body>
+</html>

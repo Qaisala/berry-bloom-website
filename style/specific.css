@@ -1,0 +1,349 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  /* Ensure the body takes up at least the full viewport height */
+  min-height: 100vh;
+}
+
+main {
+  /* Allows the main content to take up remaining vertical space */
+  flex-grow: 1;
+}
+
+.specific-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.specific-image {
+  width: 350px;
+  height: auto;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.right-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.right-section p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.specific-rating {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Add to cart  */
+.add-to-cart {
+  position: relative; /* For positioning the icon */
+  overflow: hidden; /* To potentially hide the icon initially */
+  padding: 8px 15px; /* Adjust padding as needed */
+  background-color: #2c3e50; /* Initial background color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  display: flex; /* To align text and icon */
+  align-items: center; /* Vertically align text and icon */
+  justify-content: center; /* Initially center the text */
+  width: fit-content; /* Make the button only as wide as its content */
+}
+
+.add-to-cart:hover {
+  background-color: #e4d5b7;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.add-to-cart span {
+  display: inline-block;
+  opacity: 1; /* Initially show the text */
+  transition: opacity 0.2s ease;
+}
+
+.add-to-cart .cart-icon-svg {
+  width: 1em; /* Adjust icon size */
+  height: 1em; /* Adjust icon size */
+  fill: #2c3e50;
+  opacity: 0; /* Initially hide the icon */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the icon */
+  transition: opacity 0.2s ease; /* Smooth opacity transition */
+}
+
+.add-to-cart.clicked {
+  background-color: #e4d5b7;
+}
+
+.add-to-cart.clicked span {
+  opacity: 0; /* Hide text when clicked */
+}
+
+.add-to-cart.clicked .cart-icon-svg {
+  opacity: 1; /* Show icon when clicked */
+}
+
+.h1-header,
+.h2-header {
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eee;
+  font-size: 2em;
+}
+
+.h2-header {
+  margin-top: 70px;
+}
+
+.specific-item h2 {
+  margin-bottom: 10px;
+}
+
+.product-price {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #f8aa35;
+}
+
+.description-left {
+  margin-bottom: 15px;
+  color: #7f8c8d;
+}
+
+/* Notification */
+.cart-notification {
+  position: fixed; /* Stay in place during scrolling */
+  top: 120px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  /* background-color: #4caf50; #fce6d0; #ddb690; #2c3e50; */
+  background-color: #2c3e50;
+  color: #fce6d0;
+  padding: 15px 20px;
+  border-radius: 5px;
+  opacity: 0; /* 0 is Initially hidden */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: translateY(-20px); /* Start slightly off-screen */
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.cart-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cart-notification a {
+  /* color: white; */
+  color: #ddb690;
+  text-decoration: underline;
+  margin-left: 10px;
+}
+
+#cart-notification img#notification-image {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  vertical-align: middle;
+  margin-right: 10px;
+  border-radius: 5px; /* Optional: for rounded corners */
+}
+
+/* Reviews Section */
+.reviews-section {
+  margin-top: 50px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.reviews-section h2.h2-header {
+  margin-top: 0; /* Override the default top margin for the first h2 */
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+#existing-reviews {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box; /* Ensure padding and border are within the element's width */
+}
+
+.form-group textarea {
+  resize: vertical; /* Allow vertical resizing of the textarea */
+}
+
+#review-form button[type="submit"] {
+  background-color: #2c3e50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#review-form button[type="submit"]:hover {
+  background-color: #e4d5b7;
+  color: #2c3e50;
+}
+
+.customer-review .star {
+  color: #f8aa35; /* Your desired color for filled stars */
+}
+
+footer {
+  width: 100%;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* @media queries  */
+@media (max-width: 1100px) {
+  .specific-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left-section {
+    margin-bottom: 20px;
+  }
+
+  .specific-image {
+    width: 280px;
+    height: auto;
+  }
+
+  .h1-header,
+  .h2-header {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    font-size: 1.7em !important;
+  }
+
+  .right-section p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .product-price {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+}
+
+/* @media 768px  */
+@media (max-width: 768px) {
+  .specific-image {
+    width: 250px;
+    height: auto;
+  }
+
+  .right-section p {
+    font-size: 15px;
+  }
+
+  .product-price {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+
+  .add-to-cart {
+    padding: 7px 14px; /* Adjust padding as needed */
+  }
+}
+
+/* @media 572px  */
+@media (max-width: 572px) {
+  .specific-image {
+    width: 210px;
+    height: auto;
+  }
+
+  .h1-header,
+  .h2-header {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    font-size: 1.5em !important;
+  }
+
+  .right-section p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .product-price {
+    font-size: 1em;
+    margin-bottom: 15px;
+  }
+}
+
+/* @media 457px  */
+/* @media (max-width: 457px) {
+} */
+
+/* @media 420px  */
+/* @media (max-width: 420px) {
+} */
+
+/* @media 387px  */
+/* @media (max-width: 387px) {
+} */

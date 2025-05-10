@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Order Receipt</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      #receipt-details {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        max-width: 700px; /* Adjust this value as needed */
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .order-info {
+        margin-bottom: 10px;
+      }
+      .item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+      }
+      .total {
+        margin-top: 15px;
+        font-weight: bold;
+        text-align: right;
+      }
+      .thank-you {
+        text-align: center;
+        margin-top: 20px;
+        font-style: italic;
+        color: #555;
+      }
+      .save-instruction {
+        text-align: center;
+        font-size: 0.8em;
+        color: #777;
+        margin-bottom: 15px; /* Add some space below the instruction */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Order Receipt</h1>
+    <p class="thank-you">
+      Thank you for your order from
+      <span style="font-weight: bold">Berry & Bloom</span>!<br />Your order will
+      be delivered in <span id="thank-you-delivery-estimate">3-5</span> business
+      days.
+    </p>
+
+    <p class="save-instruction">(Please save this page for your records.)</p>
+    <div id="receipt-details">
+      <div class="order-info">
+        <strong>From:</strong>
+        <span style="font-weight: bold">Berry & Bloom</span>
+      </div>
+      <div class="order-info">
+        <strong>Order ID:</strong> <span id="order-id"></span>
+      </div>
+      <div class="order-info">
+        <strong>Tracking Number:</strong> <span id="tracking-number"></span>
+      </div>
+      <div class="order-info">
+        <strong>Order Date:</strong> <span id="order-date"></span>
+      </div>
+      <div class="order-info">
+        <strong>Estimated Delivery:</strong>
+        <span id="delivery-estimate">Loading...</span>
+      </div>
+      <div class="order-info">
+        <strong>Customer Name:</strong> <span id="customer-name"></span><br />
+        <strong>Phone Number:</strong> <span id="customer-phone"></span><br />
+        <strong>Shipping Address:</strong> <span id="shipping-address"></span
+        ><br />
+        <strong>Payment Method:</strong> <span id="payment-method"></span>
+      </div>
+      <h2>Order Items:</h2>
+      <div id="order-items"></div>
+      <div class="total">
+        <strong>Total:</strong> JOD <span id="order-total"></span>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const receiptDetailsDiv = document.getElementById("receipt-details");
+        const orderIdSpan = document.getElementById("order-id");
+        const trackingNumberSpan = document.getElementById("tracking-number"); // Get the tracking number span
+
+        const orderDateSpan = document.getElementById("order-date");
+        const orderItemsDiv = document.getElementById("order-items");
+        const orderTotalSpan = document.getElementById("order-total");
+        const customerNameSpan = document.getElementById("customer-name");
+        const customerPhoneSpan = document.getElementById("customer-phone"); // Added line
+        const shippingAddressSpan = document.getElementById("shipping-address");
+        const paymentMethodSpan = document.getElementById("payment-method");
+        const deliveryEstimateSpan =
+          document.getElementById("delivery-estimate"); // Get the new span
+
+        const thankYouDeliveryEstimateSpan = document.getElementById(
+          "thank-you-delivery-estimate"
+        ); // Get the span in the thank-you message
+
+        // Get the orderId from the URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderIdFromURL = urlParams.get("orderId");
+
+        if (orderIdFromURL) {
+          // Retrieve the order from localStorage using the orderId
+          const orders = localStorage.getItem("orders");
+          if (orders) {
+            const ordersArray = JSON.parse(orders);
+            const order = ordersArray.find((o) => o.orderId === orderIdFromURL);
+
+            if (order) {
+              orderIdSpan.textContent = order.orderId;
+              // Set the tracking number
+              trackingNumberSpan.textContent = order.trackingNumber || "N/A";
+              orderDateSpan.textContent = order.orderDate;
+              orderTotalSpan.textContent = order.total.toFixed(2);
+
+              if (order.customerDetails) {
+                customerNameSpan.textContent =
+                  order.customerDetails.fullName || "N/A";
+                customerPhoneSpan.textContent =
+                  order.customerDetails.phoneNumber || "N/A"; // Added line
+                shippingAddressSpan.textContent =
+                  order.customerDetails.address || "N/A";
+                paymentMethodSpan.textContent =
+                  order.customerDetails.paymentMethod || "N/A";
+              }
+
+              // Set the delivery estimate
+              const deliveryDaysMin = 3; // Example minimum delivery days
+              const deliveryDaysMax = 5; // Example maximum delivery days
+              deliveryEstimateSpan.textContent = `${deliveryDaysMin}-${deliveryDaysMax} business days`;
+
+              if (order.items && order.items.length > 0) {
+                order.items.forEach((item) => {
+                  const itemDiv = document.createElement("div");
+                  itemDiv.classList.add("item");
+                  itemDiv.innerHTML = `
+                                        <span>${item.name} (${
+                    item.quantity
+                  })</span>
+                                        <span>JOD ${(
+                                          item.price * item.quantity
+                                        ).toFixed(2)}</span>
+                                    `;
+                  orderItemsDiv.appendChild(itemDiv);
+                });
+              } else {
+                orderItemsDiv.textContent = "No items in this order.";
+              }
+            } else {
+              receiptDetailsDiv.textContent = `Order with ID "${orderIdFromURL}" not found.`;
+            }
+          } else {
+            receiptDetailsDiv.textContent =
+              "No order data found in local storage.";
+          }
+        } else {
+          receiptDetailsDiv.textContent = "Order ID not provided in the URL.";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,285 @@
+<!-- index.html  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Berry & Bloom</title>
+    <link rel="stylesheet" href="style/index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html">
+          <img src="img/Berry & Bloom-1.png" alt="Perfume Store Logo" />
+        </a>
+      </div>
+      <nav class="nav-right">
+        <ul>
+          <li>
+            <a href="track.html" class="button-like" id="button-track">
+              Track your order</a
+            >
+          </li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle">Products</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a onclick="scrollToSection('productswomen')"
+                  >Women's Perfume</a
+                >
+              </li>
+              <li>
+                <a onclick="scrollToSection('productsmen')">Men's Perfume</a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a onclick="scrollToSection('about')">About Us</a>
+          </li>
+          <li><a onclick="scrollToSection('contact')">Contact</a></li>
+          <li>
+            <a href="checkout.html"
+              ><img src="./img/shopping-cart.png" class="cart-img" />
+              <span id="cart-count">0</span></a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section id="banner">
+        <div class="banner-content">
+          <h2>Discover Your Signature Scent</h2>
+          <p>Experience the art of fragrance</p>
+
+          <div class="women-men">
+            <button
+              onclick="scrollToSection('productswomen')"
+              class="women-men-btn"
+            >
+              Women's Perfume
+            </button>
+            <button
+              onclick="scrollToSection('productsmen')"
+              class="women-men-btn"
+            >
+              Men's Perfume
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="parent-carsoul">
+        <div class="carousel-item">
+          <h3>
+            <img
+              class="icon-female"
+              src="img/img icons/icon-female4.png"
+              alt="Female Icon"
+              style="
+                width: 1.8em;
+                height: 1.8em;
+                margin-right: 5px;
+                vertical-align: middle;
+              "
+            />
+            Best Selling Women's Perfumes
+          </h3>
+          <section class="carousel-container">
+            <div class="carousel-wrapper" id="womensCarousel">
+              <a href="specific.html?productId=1" style="text-decoration: none">
+                <div class="carousel-slide">
+                  <img src="img/womensperfume/Black Opium.jpg" alt="Woman 8" />
+                  <div class="carousel-caption">Black Opium</div>
+                </div>
+              </a>
+              <a href="specific.html?productId=2" style="text-decoration: none">
+                <div class="carousel-slide">
+                  <img
+                    src="img/womensperfume/Good Girl Blush.jpg"
+                    alt="Woman 8"
+                  />
+                  <div class="carousel-caption">Good Girl Blush</div>
+                </div>
+              </a>
+              <a href="specific.html?productId=3" style="text-decoration: none">
+                <div class="carousel-slide">
+                  <img
+                    src="img/womensperfume/Bright Crystal.jpg"
+                    alt="Woman 8"
+                  />
+                  <div class="carousel-caption">Bright Crystal</div>
+                </div>
+              </a>
+              <a href="specific.html?productId=4" style="text-decoration: none">
+                <div class="carousel-slide">
+                  <img
+                    src="img/womensperfume/Eternity Perfume.jpg"
+                    alt="Woman 8"
+                  />
+                  <div class="carousel-caption">Eternity</div>
+                </div>
+              </a>
+              <a href="specific.html?productId=5" style="text-decoration: none">
+                <div class="carousel-slide">
+                  <img src="img/womensperfume/Jimmy Choo.jpg" alt="Woman 8" />
+                  <div class="carousel-caption">Jimmy Choo</div>
+                </div>
+              </a>
+            </div>
+            <button
+              class="carousel-button prev"
+              onclick="scrollWomensCarousel(-1)"
+            >
+              &#10094;
+            </button>
+            <button
+              class="carousel-button next"
+              onclick="scrollWomensCarousel(1)"
+            >
+              &#10095;
+            </button>
+          </section>
+        </div>
+        <div class="carousel-item">
+          <h3>
+            <img
+              class="icon-male"
+              src="img/img icons/icon-male4.png"
+              alt="Male Icon"
+              style="
+                width: 1.8em;
+                height: 1.8em;
+                margin-right: 5px;
+                vertical-align: middle;
+              "
+            />
+            Best Selling Men's Colognes
+          </h3>
+          <section class="carousel-container">
+            <div class="carousel-wrapper" id="mensCarousel">
+              <a
+                href="specific.html?productId=13"
+                style="text-decoration: none"
+              >
+                <div class="carousel-slide">
+                  <img src="img/mensperfume/Sauvage Cologne.jpg" alt="Men 1" />
+                  <div class="carousel-caption">Sauvage Cologne</div>
+                </div></a
+              >
+              <a
+                href="specific.html?productId=14"
+                style="text-decoration: none"
+              >
+                <div class="carousel-slide">
+                  <img src="img/mensperfume/Bleu De Chanel.jpg" alt="Men 1" />
+                  <div class="carousel-caption">Bleu De Chanel</div>
+                </div></a
+              >
+              <a
+                href="specific.html?productId=15"
+                style="text-decoration: none"
+              >
+                <div class="carousel-slide">
+                  <img src="img/mensperfume/Creed Aventus.jpg" alt="Men 1" />
+                  <div class="carousel-caption">Creed Aventus</div>
+                </div></a
+              >
+              <a
+                href="specific.html?productId=16"
+                style="text-decoration: none"
+              >
+                <div class="carousel-slide">
+                  <img src="img/mensperfume/Versace Eros.jpg" alt="Men 3" />
+                  <div class="carousel-caption">Versace Eros</div>
+                </div>
+              </a>
+              <a
+                href="specific.html?productId=17"
+                style="text-decoration: none"
+              >
+                <div class="carousel-slide">
+                  <img src="img/mensperfume/Acqua Di Gio.jpg" alt="Men 3" />
+                  <div class="carousel-caption">Acqua Di Gio</div>
+                </div>
+              </a>
+            </div>
+            <button
+              class="carousel-button prev"
+              onclick="scrollMensCarousel(-1)"
+            >
+              &#10094;
+            </button>
+            <button
+              class="carousel-button next"
+              onclick="scrollMensCarousel(1)"
+            >
+              &#10095;
+            </button>
+          </section>
+        </div>
+      </div>
+
+      <div id="productswomen">
+        <h2>Women's Perfume</h2>
+        <div class="product-women-list" id="product-women-list"></div>
+      </div>
+
+      <div id="productsmen">
+        <h2>Men's Perfume</h2>
+        <div class="product-men-list" id="product-men-list"></div>
+      </div>
+
+      <section id="about">
+        <h2>About Us</h2>
+        <p>
+          Berry & Bloom is a fragrance house dedicated to crafting exceptional
+          perfumes. As the producers of our own unique scents, we pour our
+          expertise and passion into every bottle. We believe in the power of
+          fragrance to inspire and connect, and we are excited to share our
+          creations with you.
+        </p>
+      </section>
+
+      <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: qais@berryandbloom.com</p>
+        <p>Phone: +962 7 8249 0479</p>
+        <p>Address: Amman, Jordan</p>
+      </section>
+    </main>
+
+    <div id="cart-notification" class="cart-notification">
+      <img
+        id="notification-image"
+        src=""
+        alt="Added Item"
+        style="
+          width: 50px;
+          height: 50px;
+          vertical-align: middle;
+          margin-right: 10px;
+        "
+      />
+      Item added to your cart! <a href="checkout.html">View Cart</a>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Berry & Bloom. All rights reserved.</p>
+      <script src="script/index.js"></script>
+      <script src="script/carousel.js"></script>
+      <script src="script/products.js"></script>
+      <script src="script/specific.js"></script>
+    </footer>
+  </body>
+</html>

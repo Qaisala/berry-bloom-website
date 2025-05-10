@@ -1,0 +1,811 @@
+<!-- dashboard.html  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Dashboard</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+     /* Style for the logout button using the class */
+    .logout-button {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f8f9fa; 
+      color: #333; /* Dark text */
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-button:hover {
+      background-color: #d38f8f; 
+    }
+
+    .logout-button:focus {
+      outline: none;
+      border-color: #007bff; /* Highlight on focus */
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus ring */
+    }
+      #order-filter {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: flex; /* To keep buttons in a row */
+        gap: 10px; /* Space between buttons */
+      }
+
+      #order-filter button {
+        padding: 8px 15px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        /* background-color: #fce6d0; */
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      #order-filter button:hover {
+        background-color: #b4b4b4;
+      }
+
+      #order-filter button.active {
+        background-color: #b4b4b4;
+      }
+
+      #export-excel {
+        background-color: green;
+        color: white;
+        margin-left: 80px;
+      }
+      #export-excel:hover {
+        background-color: rgb(13, 82, 13);
+        color: white;
+      }
+
+      .order-section {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+      .order-section h2 {
+        margin-top: 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #eee;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f8f8f8;
+      }
+      .status-cell {
+        display: flex;
+        align-items: center;
+      }
+
+      .status-indicator {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+      }
+      .status-order-received {
+        background-color: orange; /* Or a different color you prefer */
+      }
+
+      .status-out-for-delivery {
+        background-color: blue; /* Or a different color you prefer */
+      }
+
+      .status-delivered {
+        background-color: green;
+      }
+
+      .status-cancelled {
+        background-color: red;
+      }
+      .edit-button {
+        margin-left: 5px;
+        padding: 8px 12px; /* Slightly larger padding */
+        cursor: pointer;
+        background-color: #f0ad4e; /* A more distinct color */
+        color: white;
+        border: none; /* Remove default border */
+        border-radius: 5px;
+        font-size: 0.9em;
+        transition: background-color 0.3s ease; /* Smooth hover effect */
+      }
+      .edit-button:hover {
+        background-color: #e08e0b;
+      }
+      .submit-button {
+        margin-left: 5px;
+        padding: 8px 12px; /* Slightly larger padding */
+        cursor: pointer;
+        background-color: #5cb85c; /* A more distinct color */
+        color: white;
+        border: none; /* Remove default border */
+        border-radius: 5px;
+        font-size: 0.9em;
+        transition: background-color 0.3s ease; /* Smooth hover effect */
+      }
+
+      .status-dropdown {
+        padding: 8px; /* Slightly larger padding */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.9em;
+      }
+      /* Hover effect for table rows */
+      #recent-orders-table tbody tr:hover,
+      #out-for-delivery-orders-table tbody tr:hover,
+      #delivered-orders-table tbody tr:hover,
+      #cancelled-orders-table tbody tr:hover {
+        background-color: #f5f5f5;
+      }
+      .status-dropdown.order-received {
+        font-weight: bold;
+      }
+      .status-dropdown.out-for-delivery {
+        color: rgb(1, 1, 65);
+        font-weight: bold;
+      }
+      .status-dropdown.delivered {
+        color: green;
+        font-weight: bold;
+      }
+      .status-dropdown.cancelled {
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <h1>Order Dashboard</h1>
+    <div id="login-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+      <h2>Admin Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p id="login-error" style="color: red; display: none;">Invalid username or password.</p>
+    </div>
+    
+    <div id="dashboard-content" style="display: none;">
+      <div style="display: flex; justify-content: flex-end; padding: 10px 20px; background-color: #f8f9fa; border-bottom: 1px solid #eee;">
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; align-items: center;">
+          <li style="display: inline-block; margin-left: 20px;">
+            <a href="#" id="notification-link" style="text-decoration: none; color: inherit; position: relative;">
+              <img src="./img/bell.png" alt="New Order Notification" style="width: 24px; height: 24px; vertical-align: middle; cursor: pointer;" />
+              <span id="notification-badge" style="position: absolute; top: -8px; right: -8px; background-color: red; color: white; border-radius: 50%; padding: 5px 6px; font-size: 0.9em; font-weight: bold; display: none;">!</span>
+            </a>
+          </li>
+          <li style="list-style: none; display: inline-block; margin-left: 20px;">
+            <button class="logout-button" onclick="logout()">Logout</button>
+          </li>
+        </ul>
+      </div>
+
+    <div id="order-filter">
+      <button id="filter-order-received" class="active">Order received</button>
+      <button id="filter-out-for-delivery">Out for delivery</button>
+      <button id="filter-delivered">Delivered</button>
+      <button id="filter-cancelled">Cancelled</button>
+      <button id="export-excel" style="color: white;">Export to Excel</button>
+    </div> 
+    <div id="recent-orders-section">
+      <h2>Recent Orders</h2>
+      <table id="recent-orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Tracking Number</th>
+            <th>Order Date</th>
+            <th>Customer Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Payment</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Track</th>
+            <th>Receipt</th>
+          </tr>
+        </thead>
+        <tbody id="recent-orders-body"></tbody>
+      </table>
+      <p id="no-recent-orders" style="display: none">No recent orders.</p>
+    </div>
+
+    <div id="out-for-delivery-orders-section" style="display: none">
+      <h2>Out for Delivery</h2>
+      <table id="out-for-delivery-orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Tracking Number</th>
+            <th>Order Date</th>
+            <th>Customer Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Payment</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Track</th>
+            <th>Receipt</th>
+          </tr>
+        </thead>
+        <tbody id="out-for-delivery-orders-body"></tbody>
+      </table>
+      <p id="no-out-for-delivery-orders" style="display: none">
+        No orders out for delivery.
+      </p>
+    </div>
+
+    <div id="delivered-orders-section" style="display: none">
+      <h2>Delivered Orders</h2>
+      <table id="delivered-orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Tracking Number</th>
+            <th>Order Date</th>
+            <th>Customer Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Payment</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Track</th>
+            <th>Receipt</th>
+          </tr>
+        </thead>
+        <tbody id="delivered-orders-body"></tbody>
+      </table>
+      <p id="no-delivered-orders" style="display: none">No delivered orders.</p>
+    </div>
+
+    <div id="cancelled-orders-section" style="display: none">
+      <h2>Cancelled Orders</h2>
+      <table id="cancelled-orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Tracking Number</th>
+            <th>Order Date</th>
+            <th>Customer Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Payment</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Track</th>
+            <th>Receipt</th>
+          </tr>
+        </thead>
+        <tbody id="cancelled-orders-body"></tbody>
+      </table>
+      <p id="no-cancelled-orders" style="display: none">No cancelled orders.</p>
+    </div>
+    <script>
+
+  let currentSection = "order-received";
+  const notificationBadge = document.getElementById("notification-badge");
+      // Login code
+  const loginContainer = document.getElementById('login-container');
+  const dashboardContent = document.getElementById('dashboard-content');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const loginError = document.getElementById('login-error');
+
+  // Add these lines here:
+  const storedUsername = localStorage.getItem('adminUsername') || '123'; // Default username
+  const storedPassword = localStorage.getItem('adminPassword') || '123'; // Default password
+
+  function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (isLoggedIn) {
+      loginContainer.style.display = 'none';
+      dashboardContent.style.display = 'block';
+      displayOrders(); // Load the dashboard data
+    } else {
+      loginContainer.style.display = 'flex';
+      dashboardContent.style.display = 'none';
+    }
+  }
+
+  function login() {
+    const enteredUsername = usernameInput.value;
+    const enteredPassword = passwordInput.value;
+
+    if (enteredUsername === storedUsername && enteredPassword === storedPassword) {
+      localStorage.setItem('isLoggedIn', 'true');
+      checkLoginStatus();
+    } else {
+      loginError.style.display = 'block';
+    }
+  }
+
+  // Initial check on page load
+  checkLoginStatus();
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'orders') {
+      console.log('[storage] Orders in localStorage have changed! Re-displaying orders.');
+      displayOrders();
+    } else if (event.key === 'isLoggedIn') {
+      checkLoginStatus(); // Update display if login status changes in another tab
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem('isLoggedIn');
+    checkLoginStatus();
+  }
+
+   
+      function displayOrders() {
+      console.log(
+        `[displayOrders] currentSection at the beginning: ${currentSection}`
+      );
+      const recentOrdersSection = document.getElementById(
+        "recent-orders-section"
+      );
+      const recentOrdersTable = document.getElementById(
+        "recent-orders-table"
+      );
+      const recentOrdersBody = document.getElementById("recent-orders-body");
+      const noRecentOrdersMessage =
+        document.getElementById("no-recent-orders");
+      recentOrdersBody.innerHTML = "";
+
+      const outForDeliverySection = document.getElementById(
+        "out-for-delivery-orders-section"
+      );
+      const outForDeliveryTable = document.getElementById(
+        "out-for-delivery-orders-table"
+      );
+      const outForDeliveryBody = document.getElementById(
+        "out-for-delivery-orders-body"
+      );
+      const noOutForDeliveryOrdersMessage = document.getElementById(
+        "no-out-for-delivery-orders"
+      );
+      outForDeliveryBody.innerHTML = "";
+
+      const deliveredOrdersSection = document.getElementById(
+        "delivered-orders-section"
+      );
+      const deliveredOrdersTable = document.getElementById(
+        "delivered-orders-table"
+      );
+      const deliveredOrdersBody = document.getElementById(
+        "delivered-orders-body"
+      );
+      const noDeliveredOrdersMessage = document.getElementById(
+        "no-delivered-orders"
+      );
+      deliveredOrdersBody.innerHTML = "";
+
+      const cancelledOrdersSection = document.getElementById(
+        "cancelled-orders-section"
+      );
+      const cancelledOrdersTable = document.getElementById(
+        "cancelled-orders-table"
+      );
+      const cancelledOrdersBody = document.getElementById(
+        "cancelled-orders-body"
+      );
+      const noCancelledOrdersMessage = document.getElementById(
+        "no-cancelled-orders"
+      );
+      cancelledOrdersBody.innerHTML = "";
+
+      const orders = localStorage.getItem("orders");
+
+      if (orders) {
+        const ordersArray = JSON.parse(orders);
+        const reversedOrdersArray = ordersArray.slice().reverse();
+
+        reversedOrdersArray.forEach((order) => {
+          console.log(
+            `[displayOrders] Order ID: ${order.orderId}, Status: ${order.status}`
+          );
+
+          const row = document.createElement("tr");
+          const itemsList = order.items
+            .map((item) => `${item.name} (${item.quantity})`)
+            .join(", ");
+          let statusDropdownHTML = "";
+          let actionButtonsHTML = "";
+
+          const isFinalStatus = [
+            "Out for delivery",
+            "Delivered",
+            "Cancelled",
+          ].includes(order.status);
+
+          if (isFinalStatus) {
+            statusDropdownHTML = `
+        <select class="status-dropdown ${
+              order.status ? order.status.toLowerCase().replace(/ /g, "-") : ""
+            }" disabled>
+              <option value="${order.status}">${order.status}</option>
+            </select>
+          `;
+            actionButtonsHTML = `<button class="submit-button" data-order-id="${order.orderId}">Submit</button> <button class="edit-button" data-order-id="${order.orderId}">Edit</button>`;
+          } else {
+            statusDropdownHTML = `
+        <select class="status-dropdown ${
+              order.status ? order.status.toLowerCase().replace(/ /g, "-") : ""
+            }" data-order-id="${order.orderId}">
+              <option value="" ${
+                !order.status ? "selected" : ""
+              }>Select Status</option>
+              <option value="Order received" ${
+                order.status === "Order received" ? "selected" : ""
+              }>Order received</option>
+              <option value="Out for delivery" ${
+                order.status === "Out for delivery" ? "selected" : ""
+              }>Out for delivery</option>
+              <option value="Delivered" ${
+                order.status === "Delivered" ? "selected" : ""
+              }>Delivered</option>
+              <option value="Cancelled" ${
+                order.status === "Cancelled" ? "selected" : ""
+              }>Cancelled</option>
+            </select>
+          `;
+            actionButtonsHTML = `<button class="submit-button" data-order-id="${order.orderId}">Submit</button>`;
+          }
+
+          const receiptURL = `receipt.html?orderId=${order.orderId}`;
+          const receiptLinkHTML = `<a href="${receiptURL}" target="_blank">View</a>`;
+          const trackURL = `track.html?orderId=${order.orderId}`;
+          const trackLinkHTML = `<a href="${trackURL}" target="_blank">Track</a>`;
+
+          row.innerHTML = `
+      <td>${order.orderId}</td>
+      <td>${order.trackingNumber || "N/A"}</td>
+      <td>${order.orderDate}</td>
+      <td>${
+        order.customerDetails ? order.customerDetails.fullName : "N/A"
+      }</td>
+      <td>${
+        order.customerDetails ? order.customerDetails.phoneNumber : "N/A"
+      }</td>
+      <td>${order.customerDetails ? order.customerDetails.address : "N/A"}</td>
+      <td>${
+        order.customerDetails ? order.customerDetails.paymentMethod : "N/A"
+      }</td>
+      <td>${itemsList}</td>
+      <td>JOD ${order.total.toFixed(2)}</td>
+      <td class="status-cell">
+        <span class="status-indicator status-${order.status
+          .toLowerCase()
+          .replace(/ /g, "-")}"></span>
+        ${statusDropdownHTML}
+        ${actionButtonsHTML}
+      </td>
+      <td>${trackLinkHTML}</td>
+      <td>${receiptLinkHTML}</td>
+    `;
+
+          const statusDropdown = row.querySelector(".status-dropdown");
+          const submitButton = row.querySelector(".submit-button");
+          const editButton = row.querySelector(".edit-button");
+
+          if (editButton) {
+            editButton.addEventListener("click", () => {
+              statusDropdown.disabled = false;
+              if (submitButton) {
+                submitButton.style.display = "inline-block";
+              }
+              statusDropdown.dataset.originalStatus = statusDropdown.value;
+              statusDropdown.dataset.orderId = order.orderId;
+              statusDropdown.innerHTML = `
+                  <option value="${order.status}">${order.status}</option>
+                  ${
+                    order.status !== "Order received"
+                      ? '<option value="Order received">Order received</option>'
+                      : ""
+                  }
+                  ${
+                    order.status !== "Out for delivery"
+                      ? '<option value="Out for delivery">Out for delivery</option>'
+                      : ""
+                  }
+                  ${
+                    order.status !== "Delivered"
+                      ? '<option value="Delivered">Delivered</option>'
+                      : ""
+                  }
+                  ${
+                    order.status !== "Cancelled"
+                      ? '<option value="Cancelled">Cancelled</option>'
+                      : ""
+                  }
+                `;
+            });
+          }
+
+          if (submitButton) {
+            submitButton.addEventListener("click", () => {
+              const orderId = statusDropdown.dataset.orderId;
+              const newStatus = statusDropdown.value;
+              if (newStatus !== order.status) {
+                updateOrderStatusAndMoveRow(orderId, newStatus);
+                if (newStatus === "Order received") {
+                  currentSection = "order-received";
+                } else if (newStatus === "Out for delivery") {
+                  currentSection = "out-for-delivery";
+                } else if (newStatus === "Delivered") {
+                  currentSection = "delivered";
+                } else if (newStatus === "Cancelled") {
+                  currentSection = "cancelled";
+                }
+                displayOrders();
+              }
+              statusDropdown.disabled = true;
+              if (editButton) {
+                editButton.style.display = isFinalStatus
+                  ? "inline-block"
+                  : "none";
+              }
+              submitButton.style.display = "none";
+            });
+          }
+
+          if (order.status === "Out for delivery") {
+            outForDeliveryBody.appendChild(row);
+          } else if (order.status === "Delivered") {
+            deliveredOrdersBody.appendChild(row);
+          } else if (order.status === "Cancelled") {
+            cancelledOrdersBody.appendChild(row);
+          } else {
+            recentOrdersBody.appendChild(row);
+          }
+        });
+      }
+
+      // Initial visibility on load
+      recentOrdersSection.style.display =
+        currentSection === "order-received" ? "block" : "none";
+      outForDeliverySection.style.display =
+        currentSection === "out-for-delivery" ? "block" : "none";
+      deliveredOrdersSection.style.display =
+        currentSection === "delivered" ? "block" : "none";
+      cancelledOrdersSection.style.display =
+        currentSection === "cancelled" ? "block" : "none";
+
+      // Update "no orders" messages
+      noRecentOrdersMessage.style.display =
+        recentOrdersBody.children.length === 0 &&
+        currentSection === "order-received"
+          ? "block"
+          : "none";
+      recentOrdersTable.style.display =
+        recentOrdersBody.children.length > 0 &&
+        currentSection === "order-received"
+          ? "table"
+          : "none";
+
+      noOutForDeliveryOrdersMessage.style.display =
+        outForDeliveryBody.children.length === 0 &&
+        currentSection === "out-for-delivery"
+          ? "block"
+          : "none";
+      outForDeliveryTable.style.display =
+        outForDeliveryBody.children.length > 0 &&
+        currentSection === "out-for-delivery"
+          ? "table"
+          : "none";
+
+      noDeliveredOrdersMessage.style.display =
+        deliveredOrdersBody.children.length === 0 &&
+        currentSection === "delivered"
+          ? "block"
+          : "none";
+      deliveredOrdersTable.style.display =
+        deliveredOrdersBody.children.length > 0 &&
+        currentSection === "delivered"
+          ? "table"
+          : "none";
+
+      noCancelledOrdersMessage.style.display =
+        cancelledOrdersBody.children.length === 0 &&
+        currentSection === "cancelled"
+          ? "block"
+          : "none";
+      cancelledOrdersTable.style.display =
+        cancelledOrdersBody.children.length > 0 &&
+        currentSection === "cancelled"
+          ? "table"
+          : "none";
+
+      // Update active filter button
+      document.querySelectorAll("#order-filter button").forEach((button) => {
+        button.classList.remove("active");
+      });
+      document
+        .getElementById(`filter-${currentSection.replace(/ /g, "-")}`)
+        .classList.add("active");
+
+      updateNotificationBadge(); // Call this function at the end of displayOrders
+    }
+
+      function updateOrderStatusAndMoveRow(orderId, newStatus) {
+      const orders = localStorage.getItem("orders");
+      if (orders) {
+        const ordersArray = JSON.parse(orders);
+        const orderIndex = ordersArray.findIndex(
+          (order) => order.orderId === orderId
+        );
+        if (orderIndex !== -1) {
+          console.log(
+            `[updateOrderStatus] Updating order ID: ${orderId} to status: ${newStatus}`
+          );
+          console.log(
+            `[updateOrderStatus] currentSection before: ${currentSection}`
+          );
+          ordersArray[orderIndex].status = newStatus;
+          localStorage.setItem("orders", JSON.stringify(ordersArray));
+          if (newStatus === "Order received") {
+            currentSection = "order-received";
+            console.log(
+              `[updateOrderStatus] currentSection set to: ${currentSection}`
+            );
+          } else if (newStatus === "Out for delivery") {
+            currentSection = "out-for-delivery";
+          } else if (newStatus === "Delivered") {
+            currentSection = "delivered";
+          } else if (newStatus === "Cancelled") {
+            currentSection = "cancelled";
+          }
+          console.log(
+            "[updateOrderStatus] Calling displayOrders() after update (1st call)."
+          );
+          displayOrders();
+          setTimeout(() => {
+            console.log(
+              "[updateOrderStatus] Calling displayOrders() after update (2nd call with delay)."
+            );
+            displayOrders();
+          }, 50); // Small delay of 50 milliseconds
+          console.log(
+            `[updateOrderStatus] currentSection after: ${currentSection}`
+          );
+        } else {
+          console.log(
+            `[updateOrderStatus] Order ID: ${orderId} not found for update.`
+          );
+        }
+      } else {
+        console.log(
+          "[updateOrderStatus] No orders found in local storage to update."
+        );
+      }
+    }
+
+      function exportTableToExcel() {
+      let tableId;
+      if (currentSection === "order-received") {
+        tableId = "recent-orders-table";
+      } else if (currentSection === "out-for-delivery") {
+        tableId = "out-for-delivery-orders-table";
+      } else if (currentSection === "delivered") {
+        tableId = "delivered-orders-table";
+      } else if (currentSection === "cancelled") {
+        tableId = "cancelled-orders-table";
+      }
+
+      const table = document.getElementById(tableId);
+
+      if (!table || table.style.display === "none") {
+        alert("No data to export in the current view.");
+        return;
+      }
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.table_to_sheet(table);
+      XLSX.utils.book_append_sheet(wb, ws, "Orders");
+
+      const filename = `orders_${currentSection.replace(/ /g, "_")}.xlsx`;
+      XLSX.writeFile(wb, filename);
+    }
+
+      function updateNotificationBadge() {
+      console.log(
+        `[updateNotificationBadge] Function called. currentSection: ${currentSection}`
+      );
+      const recentOrdersBody = document.getElementById("recent-orders-body");
+      let hasNewOrders = false;
+
+      if (recentOrdersBody) {
+        for (let i = 0; i < recentOrdersBody.rows.length; i++) {
+          const row = recentOrdersBody.rows[i];
+          const statusDropdown = row.querySelector(".status-dropdown");
+          if (statusDropdown && statusDropdown.value === "") {
+            hasNewOrders = true;
+            break;
+          }
+        }
+      }
+
+      const shouldDisplay = hasNewOrders ? "inline-block" : "none";
+
+      if (notificationBadge.style.display !== shouldDisplay) {
+        notificationBadge.style.display = shouldDisplay;
+
+        // Force a re-render (experimental for display)
+        if (notificationBadge) {
+          const originalVisibility = notificationBadge.style.visibility;
+          notificationBadge.style.visibility = "hidden";
+          setTimeout(() => {
+            notificationBadge.style.visibility = originalVisibility;
+          }, 0);
+        }
+      }
+    }
+
+      function checkNewOrders() {
+      updateNotificationBadge(); // For simplicity, we'll just call the update function on the interval
+    }
+
+      // Event listeners for filter buttons
+    document
+      .getElementById("filter-order-received")
+      .addEventListener("click", () => {
+        currentSection = "order-received";
+        displayOrders();
+      });
+    document
+      .getElementById("filter-out-for-delivery")
+      .addEventListener("click", () => {
+        currentSection = "out-for-delivery";
+        displayOrders();
+      });
+    document
+      .getElementById("filter-delivered")
+      .addEventListener("click", () => {
+        currentSection = "delivered";
+        displayOrders();
+      });
+    document
+      .getElementById("filter-cancelled")
+      .addEventListener("click", () => {
+        currentSection = "cancelled";
+        displayOrders();
+      });
+
+    // Event listener for the export to excel button
+    const exportExcelButton = document.getElementById("export-excel");
+    exportExcelButton.addEventListener("click", exportTableToExcel);
+
+      // Load orders when the dashboard page loads (with default filter) and start checking for new orders
+    document.addEventListener("DOMContentLoaded", () => {
+      displayOrders();
+      setInterval(checkNewOrders, 5000); // Check every 5 seconds (adjust as needed)
+    });
+    </script>
+    <script src="script/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  </body>
+</html>
+

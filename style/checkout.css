@@ -1,0 +1,210 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#header2 {
+  margin-bottom: 20px;
+}
+
+/* Container */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 10px 10px;
+}
+
+.order-summary,
+.payment-summary {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  padding: 15px;
+}
+
+.summary-payment-header {
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+.order-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+}
+
+.item-details {
+  grid-column: 1 / 2; /* Occupies the first column */
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controls {
+  grid-column: 2 / 3; /* Occupies the second column */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the quantity controls */
+  /* gap: 3px; */
+  font-weight: bold;
+}
+
+.item-quantity {
+  margin: 0 6px;
+}
+
+.quantity-button {
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  padding: 6px 12px;
+}
+
+.decrease-button,
+.increase-button {
+  background-color: #f5e7da;
+}
+
+.decrease-button:hover,
+.increase-button:hover {
+  background-color: #ddb690;
+}
+
+.item-price {
+  grid-column: 3 / 4; /* Occupies the third column */
+  text-align: right; /* Align the price text to the right */
+}
+
+.item-image {
+  width: 60px;
+  height: auto;
+  margin-right: 10px;
+}
+
+/* This class added to the container for both "summary-item" in "checkout.html" */
+.summary-container {
+  margin-top: 30px;
+}
+
+/* This class added to each item in the "summary-container" in "checkout.html" */
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding-top: 10px;
+  border-top: 2px solid #eee;
+}
+
+.payment-method {
+  margin-bottom: 15px;
+}
+
+.payment-method label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.payment-method select,
+.payment-method input[type="text"] {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.button-proceed-to-checkout {
+  background-color: #ffce12;
+  color: black;
+  font-family: "Open Sans", sans-serif;
+  transition: color 0.3s ease;
+  font-size: 1em;
+  font-weight: 540;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  padding: 12px 24px;
+}
+
+.button-proceed-to-checkout:hover {
+  background-color: #e2b913;
+}
+
+/* Media */
+/* @media (max-width: 1172px) {
+  .checkout-grid {
+    grid-template-columns: auto auto;
+    justify-content: center;
+  }
+} */
+
+@media (max-width: 1110px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    /* grid-row: 1 means this element will be placed into row
+      1 in the grid. (Normally, the row that an element is
+      placed in is determined by the order of the elements in
+      the HTML. grid-row overrides this default ordering). */
+    grid-row: 1;
+  }
+
+  .delivery-options {
+    /* span 2 means this element will take up 2 columns
+       in the grid (Normally, each element takes up 1
+       column in the grid). */
+    grid-column: 1 / span 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .quantity-button {
+    font-size: 0.8em;
+
+    padding: 5px 10px;
+  }
+
+  .item-image {
+    width: 50px;
+    height: auto;
+    margin-right: 5px;
+  }
+
+  .total {
+    font-size: 1.1em;
+    padding-top: 10px;
+  }
+}
